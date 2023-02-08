@@ -1,0 +1,1 @@
+face_model_location = "./models/haarcascade_frontalface_default.xml"
