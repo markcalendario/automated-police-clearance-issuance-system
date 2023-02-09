@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../clearance_template/clearance.css">
+	<title>Document</title>
+</head>
+
+<body>
+	<div class="foreword">
+		<p>This certificate mimics the original police clearance for <strong>EDUCATIONAL PURPOSES ONLY</strong>. This
+			material is not legitimate and cannot be used as a valid document. The developers do not intend to
+			forge the original police clearance. This document is part of final system project of Group 4 from BSCS 2-3 in
+			Modelling and
+			Simulation</p>
+	</div>
+
+	<div class="clearance">
+		<div class="clearance-paper paper-top">
+			<div class="header">
+				<div class="team-logo">
+					<img src="../assets/global/logo_img.png" alt="Logo">
+				</div>
+				<div class="texts">
+					<h4>Republic of the Philippines</h4>
+					<h4>Decode | Modelling and Simulation</h4>
+					<h4>Polytechnic University of the Philippines</h4>
+					<h4>Manila, National Capital Region</h4>
+				</div>
+				<div class="section-logo">
+					<img src="../assets/global/bscs_logo.png" alt="" srcset="">
+				</div>
+			</div>
+
+			<p class="issuance-date">Issued date:</p>
+
+			<div class="title">
+				<h3>Police Clearance Certificate</h3>
+			</div>
+
+			<div class="certifying-paragraph">
+				<div class="text">
+					<h1>TO WHOM IT MAY CONCERN</h1>
+					<p>This person whose name, picture, and other deails in this certificate passed the records verification which
+						was conducted by this station. The result is listed below:</p>
+				</div>
+			</div>
+
+			<div class="client-picture">
+				<img src="../client_temporary_files/client.png" alt="Client">
+			</div>
+
+			<table>
+				<tr>
+					<td>Full Name</td>
+					<td class="fullname"></td>
+				</tr>
+				<tr>
+					<td>Address</td>
+					<td class="address"></td>
+				</tr>
+				<tr>
+					<td>Date of Birth</td>
+					<td class="birthdate"></td>
+				</tr>
+				<tr>
+					<td>FINDINGS</td>
+					<td style="color: green">NO DEROGATORY RECORD</td>
+				</tr>
+				<tr>
+					<td>PURPOSE</td>
+					<td class="purpose"></td>
+				</tr>
+				<tr>
+					<td>VALIDITY</td>
+					<td>SIX (6) MONTHS FROM THE DATE OF ISSUANCE</td>
+				</tr>
+				<tr>
+					<td>NUMBER</td>
+					<td class="number"></td>
+				</tr>
+			</table>
+
+			<div class="verifier-container">
+				<h4>Verified by</h4>
+				<div class="verifier">
+					<p class="verifier-name"></p>
+					<p>Police Inspector</p>
+				</div>
+			</div>
+
+			<div class="barcode">
+				<img src="../client_temporary_files/barcode.png" alt="Code">
+			</div>
+		</div>
+		<img class="cut" src="../clearance_template/cut.png" alt="Cut">
+		<div class="clearance-paper paper-bottom">
+			<div class="header">
+				<div class="team-logo">
+					<img src="../assets/global/logo_img.png" alt="Logo">
+				</div>
+				<div class="texts">
+					<h4>Republic of the Philippines</h4>
+					<h4>Decode | Modelling and Simulation</h4>
+					<h4>Polytechnic University of the Philippines</h4>
+					<h4>Manila, National Capital Region</h4>
+				</div>
+				<div class="section-logo">
+					<img src="../assets/global/bscs_logo.png" alt="" srcset="">
+				</div>
+			</div>
+
+			<p class="issuance-date">Issued date:</p>
+
+			<div class="title">
+				<h3>Police Clearance Certificate</h3>
+			</div>
+
+			<div class="certifying-paragraph">
+				<div class="text">
+					<h1>TO WHOM IT MAY CONCERN</h1>
+					<p>This person whose name, picture and right thumb marked in this certificate passed the records verification
+						which was conducted by this station. The result is listed below:</p>
+				</div>
+			</div>
+
+			<div class="client-picture">
+				<img src="../client_temporary_files/client.png" alt="Client">
+			</div>
+
+			<table>
+				<tr>
+					<td>Full Name</td>
+					<td class="fullname"></td>
+				</tr>
+				<tr>
+					<td>Address</td>
+					<td class="address"></td>
+				</tr>
+				<tr>
+					<td>Date of Birth</td>
+					<td class="birthdate"></td>
+				</tr>
+				<tr>
+					<td>FINDINGS</td>
+					<td style="color: green">NO DEROGATORY RECORD</td>
+				</tr>
+				<tr>
+					<td>PURPOSE</td>
+					<td class="purpose"></td>
+				</tr>
+				<tr>
+					<td>VALIDITY</td>
+					<td>SIX (6) MONTHS FROM THE DATE OF ISSUANCE</td>
+				</tr>
+				<tr>
+					<td>NUMBER</td>
+					<td class="number"></td>
+				</tr>
+			</table>
+
+			<div class="verifier-container">
+				<h4>Verified by</h4>
+				<div class="verifier">
+					<p class="verifier-name"></p>
+					<p>Police Inspector</p>
+				</div>
+			</div>
+
+			<div class="barcode">
+				<img src="../client_temporary_files/barcode.png" alt="Code">
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+
+<script>
+
+	function displayDetails() {
+
+		const fullname = "%FULLNAME%"
+		const address = "%ADDRESS%"
+		const birthdate = "%BIRTHDATE%"
+		const purpose = "%PURPOSE%"
+		const number = "%NUMBER%"
+
+		const fullname_cell = document.getElementsByClassName('fullname')
+		fullname_cell[0].innerText = fullname
+		fullname_cell[1].innerText = fullname
+
+		const address_cell = document.getElementsByClassName('address')
+		address_cell[0].innerText = address
+		address_cell[1].innerText = address
+
+		const birthdate_cell = document.getElementsByClassName('birthdate')
+		birthdate_cell[0].innerText = birthdate
+		birthdate_cell[1].innerText = birthdate
+
+		const purpose_cell = document.getElementsByClassName('purpose')
+		purpose_cell[0].innerText = purpose
+		purpose_cell[1].innerText = purpose
+
+		const number_cell = document.getElementsByClassName('number')
+		number_cell[0].innerText = number
+		number_cell[1].innerText = number
+	}
+
+	function displayVerifier() {
+		const verifierName = "%VERIFIER NAME%"
+
+		const displayedVerifier = document.getElementsByClassName('verifier-name')
+		displayedVerifier[0].innerText = verifierName
+		displayedVerifier[1].innerText = verifierName
+	}
+
+	function displayIssuanceDate() {
+		date = new Date()
+		var year = date.getFullYear();
+
+		var month = (1 + date.getMonth()).toString();
+		month = month.length > 1 ? month : '0' + month;
+
+		var day = date.getDate().toString();
+		day = day.length > 1 ? day : '0' + day;
+
+		issuance_date = document.getElementsByClassName('issuance-date')
+		issuance_date[0].innerText = `Date issued: ${month}/${day}/${year}`
+		issuance_date[1].innerText = `Date issued: ${month}/${day}/${year}`
+	}
+
+	displayVerifier()
+	displayDetails()
+	displayIssuanceDate()
+
+</script>

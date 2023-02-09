@@ -1,7 +1,11 @@
+import os
 from tkinter import Canvas, Entry, Button, PhotoImage, Toplevel
+from tkinter.messagebox import showerror, showinfo, showwarning
 from assets import assets
 from sign_out import sign_out
 from fonts import fonts
+from datetime import datetime
+import webbrowser
 
 class ClearanceForm:
 	def __init__(self, parent_frame, root):
@@ -71,7 +75,7 @@ class ClearanceForm:
 			font=(fonts.bold, 14 * -1)
 		)
 		
-		self.surname_entry = Entry(
+		self.firstname_entry = Entry(
 			self.window,
 			bd=5,
 			bg="#DEDEDE",
@@ -80,7 +84,7 @@ class ClearanceForm:
 			relief="flat"
 		)
 		
-		self.surname_entry.place(
+		self.firstname_entry.place(
 				x=69.0,
 				y=239.0,
 				width=351.0,
@@ -96,7 +100,7 @@ class ClearanceForm:
 				font=(fonts.bold, 14 * -1)
 		)
 		
-		self.entry_2 = Entry(
+		self.lastname_entry = Entry(
 			self.window,
 			bd=5,
 			bg="#DEDEDE",
@@ -105,7 +109,7 @@ class ClearanceForm:
 			relief="flat"
 		)
 		
-		self.entry_2.place(
+		self.lastname_entry.place(
 				x=69.0,
 				y=308.0,
 				width=351.0,
@@ -121,7 +125,7 @@ class ClearanceForm:
 			font=(fonts.bold, 14 * -1)
 		)
 		
-		self.entry_3 = Entry(
+		self.middlename_entry = Entry(
 			self.window,
 			bd=5,
 			bg="#DEDEDE",
@@ -130,7 +134,7 @@ class ClearanceForm:
 			relief="flat"
 		)
 		
-		self.entry_3.place(
+		self.middlename_entry.place(
 			x=69.0,
 			y=377.0,
 			width=351.0,
@@ -146,7 +150,7 @@ class ClearanceForm:
 			font=(fonts.bold, 14 * -1)
 		)
 		
-		self.entry_4 = Entry(
+		self.suffix_entry = Entry(
 			self.window,
 			bd=5,
 			bg="#DEDEDE",
@@ -155,7 +159,7 @@ class ClearanceForm:
 			relief="flat"
 		)
 		
-		self.entry_4.place(
+		self.suffix_entry.place(
 			x=69.0,
 			y=446.0,
 			width=351.0,
@@ -166,12 +170,12 @@ class ClearanceForm:
 			572.0,
 			218.0,
 			anchor="nw",
-			text="Birthday (MM/DD/YYYY)",
+			text="Birthdate (MM/DD/YYYY)",
 			fill="#000000",
 			font=(fonts.bold, 14 * -1)
 		)
 		
-		self.entry_5 = Entry(
+		self.birthdate_entry = Entry(
 			self.window,
 			bd=5,
 			bg="#DEDEDE",
@@ -180,7 +184,7 @@ class ClearanceForm:
 			relief="flat"
 		)
 		
-		self.entry_5.place(
+		self.birthdate_entry.place(
 			x=572.0,
 			y=239.0,
 			width=351.0,
@@ -196,7 +200,7 @@ class ClearanceForm:
 			font=(fonts.bold, 14 * -1)
 		)
 		
-		self.entry_6 = Entry(
+		self.address_entry = Entry(
 			self.window,
 			bd=5,
 			bg="#DEDEDE",
@@ -205,7 +209,7 @@ class ClearanceForm:
 			relief="flat"
 		)
 		
-		self.entry_6.place(
+		self.address_entry.place(
 			x=572.0,
 			y=308.0,
 			width=351.0,
@@ -221,7 +225,7 @@ class ClearanceForm:
 			font=(fonts.bold, 14 * -1)
 		)
 		
-		self.entry_7 = Entry(
+		self.birth_place_entry = Entry(
 			self.window,
 			bd=5,
 			bg="#DEDEDE",
@@ -230,7 +234,7 @@ class ClearanceForm:
 			relief="flat"
 		)
 		
-		self.entry_7.place(
+		self.birth_place_entry.place(
 			x=572.0,
 			y=377.0,
 			width=351.0,
@@ -246,7 +250,7 @@ class ClearanceForm:
 			font=(fonts.bold, 14 * -1)
 		)
 		
-		self.entry_8 = Entry(
+		self.purpose_entry = Entry(
 			self.window,
 			bd=5,
 			bg="#DEDEDE",
@@ -255,7 +259,7 @@ class ClearanceForm:
 			relief="flat"
 		)
 		
-		self.entry_8.place(
+		self.purpose_entry.place(
 			x=572.0,
 			y=446.0,
 			width=351.0,
@@ -269,7 +273,7 @@ class ClearanceForm:
 			image=self.finalize_btn_img,
 			borderwidth=0,
 			highlightthickness=0,
-			command=lambda: print("Finalize"),
+			command=self.handle_finalize_btn_click,
 			relief="flat"
 		)
 		
@@ -356,3 +360,49 @@ class ClearanceForm:
 		self.hide()
 		self.parent_frame.show()
 
+	def validate_entries(self):
+		self.first_name = self.firstname_entry.get().strip()
+		self.last_name = self.lastname_entry.get().strip()
+		self.middle_name = self.middlename_entry.get().strip()
+		self.suffix = self.suffix_entry.get().strip()
+		self.birthdate = self.birthdate_entry.get().strip()
+		self.address = self.address_entry.get().strip()
+		self.birth_place = self.birth_place_entry.get().strip()
+		self.purpose = self.purpose_entry.get().strip()
+
+		if self.first_name == "":
+			return False, "First name is empty."
+		
+		if self.last_name == "":
+			return False, "Last name is empty"
+		
+		if self.middle_name == "":
+			return False, "Middle name is empty."
+		
+		if self.birthdate == "":
+			return False, "Birthdate is empty."
+		
+		try:
+			datetime.strptime(self.birthdate, "%m/%d/%Y")
+		except:
+			return False, "Date format is not acceptable."
+		
+		if self.address == "":
+			return False, "Address is empty."
+		
+		if self.birth_place == "":
+			return False, "Birth place is empty."
+
+		if self.purpose == "":
+			return False, "Purpose is empty."
+		
+		return True, "Valid"
+
+	def handle_finalize_btn_click(self):
+		inputs_valid, message = self.validate_entries()
+
+		if not inputs_valid: 
+			showerror("Error", message)
+			return
+
+		clearance_data_str = f"NAME={self.first_name} {self.middle_name} {self.last_name} {self.middle_name}\nADDRESS={self.address}\nBIRTHDATE={self.birthdate}\nBIRTHPLACE={self.birth_place}\nPURPOSE={self.purpose}"

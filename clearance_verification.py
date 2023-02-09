@@ -229,7 +229,7 @@ class clearance_verification:
 		wanted_list_dir = './database/wanted_list'
 		wanted_list = os.listdir(wanted_list_dir)
 
-		client_face = load_image_file('./client.png')
+		client_face = load_image_file('./client_temporary_files/client.png')
 		client_face_encoding = face_encodings(client_face)[0]
 
 		for wanted in wanted_list:

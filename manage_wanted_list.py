@@ -7,7 +7,7 @@ from assets import assets
 from face_model_processors import get_faces, has_one_face, zoom_to_client_face
 from cv2 import imread, imwrite
 from shutil import move
-from time import time
+from time import time, localtime
 
 class ManageWantedList:
 	def __init__(self, parent_frame, root):
@@ -261,10 +261,13 @@ class ManageWantedList:
 			showinfo("Importation Cancelled", "Importation of the selected wanted image cancelled.")
 			return
 		
-		wanted_image_new_filename = f"WANTED_{str(time()).split('.')[0]}"
+		wanted_image_new_filename = self.generate_new_filename()
 		move(".temp_preview.png", f"./database/wanted_list/{wanted_image_new_filename}.png")
 		showinfo("Success", f"{wanted_image_new_filename} imported successfully.")
 
+	def generate_new_filename(self):
+		return f"WANTED_{str(int(time()))}"
+	
 	def toggle_button_state(self):
 		is_enabled = self.import_wanted_image_btn["state"] == "normal" or self.remove_wanted_image_btn["state"] == "enabled"
 

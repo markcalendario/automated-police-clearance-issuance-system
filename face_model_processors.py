@@ -58,7 +58,7 @@ def zoom_to_client_face(face, frame):
 		return False, None
 
 def save_capture(image):
-	imwrite("client.png", image)
+	imwrite("client_temporary_files/client.png", image)
 
 def capture_client_face():
 
