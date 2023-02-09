@@ -230,9 +230,17 @@ class clearance_verification:
 		wanted_list = os.listdir(wanted_list_dir)
 
 		client_face = load_image_file('./client_temporary_files/client.png')
-		client_face_encoding = face_encodings(client_face)[0]
+		client_face_encoding = None
+
+		try:
+			client_face_encoding = face_encodings(client_face)[0]
+		except IndexError:
+			messagebox.showerror("Verification Guide", "Face is unrecognizable. Try again.")
 
 		for wanted in wanted_list:
+			if not wanted.endswith(".png"):
+				continue
+
 			wanted_face = load_image_file(os.path.join(wanted_list_dir, wanted))
 			result = []
 

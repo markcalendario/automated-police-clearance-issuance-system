@@ -75,7 +75,7 @@ class image_match:
 			image=self.wanted_face_img
 		)
     
-    self.client_face_img = PhotoImage(file='./client.png')
+    self.client_face_img = PhotoImage(file='./client_temporary_files/client.png')
 		
     self.client_face = self.canvas.create_image(
     	774.0,

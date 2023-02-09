@@ -1,16 +1,20 @@
-import os
 from tkinter import Canvas, Entry, Button, PhotoImage, Toplevel
-from tkinter.messagebox import showerror, showinfo, showwarning
+from tkinter.messagebox import showerror, askyesno
 from assets import assets
 from sign_out import sign_out
 from fonts import fonts
 from datetime import datetime
-import webbrowser
+from time import time, localtime
+import qrcode
+from admin import admin
+from issuance_area import IssuanceArea
 
 class ClearanceForm:
 	def __init__(self, parent_frame, root):
 		self.parent_frame = parent_frame
 		self.root = root
+
+		self.clearance_number = self.generate_clearance_number()
 		
 		self.window = Toplevel(self.parent_frame.window)
 		self.window.geometry("992x594")
@@ -34,7 +38,7 @@ class ClearanceForm:
 			69.0,
 			106.0,
 			anchor="nw",
-			text="Create a Clearance",
+			text=f"Create a Clearance [{self.clearance_number}]",
 			fill="#000000",
 			font=(fonts.bold, 30 * -1)
 		)
@@ -398,11 +402,53 @@ class ClearanceForm:
 		
 		return True, "Valid"
 
+	def generate_clearance_number(self):
+		t = localtime(time())
+		return f"CLRNC_{t.tm_mon}{t.tm_mday}{t.tm_year}_{t.tm_hour}{t.tm_min}{t.tm_sec}"
+
+	def save_clearance_record(self):
+		clearance_data_str = f"NAME={self.first_name} {self.middle_name} {self.last_name} {self.middle_name}\nADDRESS={self.address}\nBIRTHDATE={self.birthdate}\nBIRTHPLACE={self.birth_place}\nPURPOSE={self.purpose}"
+
+		file = open(f"./database/clearance_list/{self.clearance_number}.txt", "w")
+		file.write(clearance_data_str)
+		file.close()	
+
+	def generate_printable_clearance(self):
+		file = open("./clearance_template/clearance.html", "r")
+		content = file.read()
+		content = content.replace("%FULLNAME%", f"{self.first_name} {self.middle_name} {self.last_name} {self.suffix}")
+		content = content.replace("%ADDRESS%", self.address)
+		content = content.replace("%BIRTHDATE%", self.birthdate)
+		content = content.replace("%BIRTHPLACE%", self.birth_place)
+		content = content.replace("%PURPOSE%", self.purpose)
+		content = content.replace("%NUMBER%", self.clearance_number)
+		content = content.replace("%VERIFIER NAME%", admin.get_name())
+		file.close()
+
+		file = open("./client_temporary_files/clearance.html", "w")
+		file.write(content)
+		file.close()
+
+	def generate_qr_code(self):
+		qr = qrcode.make(self.clearance_number)
+		qr.save("./client_temporary_files/qrcode.png")
+
 	def handle_finalize_btn_click(self):
 		inputs_valid, message = self.validate_entries()
 
 		if not inputs_valid: 
 			showerror("Error", message)
 			return
+		
+		response = askyesno("Are you sure?", f"Do you really want to finalize {self.clearance_number}?")
 
-		clearance_data_str = f"NAME={self.first_name} {self.middle_name} {self.last_name} {self.middle_name}\nADDRESS={self.address}\nBIRTHDATE={self.birthdate}\nBIRTHPLACE={self.birth_place}\nPURPOSE={self.purpose}"
+		if not response:
+			return
+		
+		self.save_clearance_record()
+		self.generate_printable_clearance()
+		self.generate_qr_code()
+
+		IssuanceArea(self, self.root).start()
+
+		

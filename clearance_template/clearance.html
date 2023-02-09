@@ -67,6 +67,10 @@
 					<td class="birthdate"></td>
 				</tr>
 				<tr>
+					<td>Place of Birth</td>
+					<td class="birthplace"></td>
+				</tr>
+				<tr>
 					<td>FINDINGS</td>
 					<td style="color: green">NO DEROGATORY RECORD</td>
 				</tr>
@@ -92,8 +96,8 @@
 				</div>
 			</div>
 
-			<div class="barcode">
-				<img src="../client_temporary_files/barcode.png" alt="Code">
+			<div class="qrcode">
+				<img src="../client_temporary_files/qrcode.png" alt="Code">
 			</div>
 		</div>
 		<img class="cut" src="../clearance_template/cut.png" alt="Cut">
@@ -145,6 +149,10 @@
 					<td class="birthdate"></td>
 				</tr>
 				<tr>
+					<td>Place of Birth</td>
+					<td class="birthplace"></td>
+				</tr>
+				<tr>
 					<td>FINDINGS</td>
 					<td style="color: green">NO DEROGATORY RECORD</td>
 				</tr>
@@ -170,8 +178,8 @@
 				</div>
 			</div>
 
-			<div class="barcode">
-				<img src="../client_temporary_files/barcode.png" alt="Code">
+			<div class="qrcode">
+				<img src="../client_temporary_files/qrcode.png" alt="Code">
 			</div>
 		</div>
 	</div>
@@ -187,6 +195,7 @@
 		const fullname = "%FULLNAME%"
 		const address = "%ADDRESS%"
 		const birthdate = "%BIRTHDATE%"
+		const birthplace = "%BIRTHPLACE%"
 		const purpose = "%PURPOSE%"
 		const number = "%NUMBER%"
 
@@ -201,6 +210,10 @@
 		const birthdate_cell = document.getElementsByClassName('birthdate')
 		birthdate_cell[0].innerText = birthdate
 		birthdate_cell[1].innerText = birthdate
+
+		const birthplace_cell = document.getElementsByClassName('birthplace')
+		birthplace_cell[0].innerText = birthplace
+		birthplace_cell[1].innerText = birthplace
 
 		const purpose_cell = document.getElementsByClassName('purpose')
 		purpose_cell[0].innerText = purpose

@@ -128,7 +128,7 @@ body {
 	overflow: hidden;
 }
 
-.barcode {
+.qrcode {
 	width: 1.5in;
 	float: right;
 	margin-top: -150px;
@@ -136,7 +136,7 @@ body {
 }
 
 .client-picture img,
-.barcode img {
+.qrcode img {
 	width: 100%;
 }
 

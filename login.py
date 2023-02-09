@@ -153,13 +153,13 @@ class login_screen:
 	def handle_login_click(self):
 
 		try:
-			file = open("database/login_credential.txt")
+			file = open("./database/login_credential.txt")
 		except:
-			file = open("database/login_credential.txt", "w")
+			file = open("./database/login_credential.txt", "w")
 			file.write("username:<username>\npassword:<password>\n")
 			file.close()
 
-		file = open("database/login_credential.txt", 'r')
+		file = open("./database/login_credential.txt", 'r')
 		data = file.readlines()
 		file.close()
 		is_logged_in = False
