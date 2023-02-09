@@ -1,4 +1,4 @@
-from assets import relative_to_assets
+from assets import assets
 from landing import landing_screen
 from fonts import fonts
 from admin import admin
@@ -56,7 +56,7 @@ class login_screen:
 			outline=""
 		)
 
-		self.frame_graphics_image = PhotoImage(file=relative_to_assets("login_screen","frame_graphics_image.png"))
+		self.frame_graphics_image = PhotoImage(file=assets("login_screen","frame_graphics_image.png"))
 		
 		self.frame_graphics = self.canvas.create_image(
 			454.0,
@@ -66,19 +66,12 @@ class login_screen:
 
 		# region Username Input Field
 
-		self.username_input_image = PhotoImage(file=relative_to_assets("login_screen","username_text_field.png"))
-		
-		self.username_input_bg = self.canvas.create_image(
-			808.5,
-			374.0,
-			image=self.username_input_image
-		)
-		
 		self.username_input = Entry(
-			bd=0,
+			border=5,
 			bg="#D9D9D9",
 			fg="#000716",
-			highlightthickness=0
+			highlightthickness=0,
+			relief="flat"
 		)
 		
 		self.username_input.place(
@@ -101,20 +94,13 @@ class login_screen:
 
 		# region Password Input Field
 
-		self.password_input_image = PhotoImage(file=relative_to_assets("login_screen", "password_text_field.png.png"))
-		
-		self.password_input_bg = self.canvas.create_image(
-			808.5,
-			449.5,
-			image=self.password_input_image
-		)
-
 		self.password_input = Entry(
-			bd=0,
+			border=5,
 			bg="#D9D9D9",
 			fg="#000716",
 			show="●",
-			highlightthickness=0
+			highlightthickness=0,
+			relief="flat"
 		)
 
 		self.password_input.place(
@@ -137,7 +123,7 @@ class login_screen:
 
 		# region Sign In Button
 
-		self.sign_btn_img = PhotoImage(file=relative_to_assets("login_screen", "sign_in_btn.png"))
+		self.sign_btn_img = PhotoImage(file=assets("login_screen", "sign_in_btn.png"))
 		
 		self.sign_in_button = Button(
 			self.window,

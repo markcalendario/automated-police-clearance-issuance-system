@@ -14,7 +14,7 @@ OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\markc\Desktop\Programming\decode\build\assets\frame3")
 
 
-def relative_to_assets(path: str) -> Path:
+def assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
@@ -81,7 +81,7 @@ canvas.create_text(
 )
 
 entry_image_1 = PhotoImage(
-    file=relative_to_assets("entry_1.png"))
+    file=assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(
     244.5,
     256.0,
@@ -110,7 +110,7 @@ canvas.create_text(
 )
 
 entry_image_2 = PhotoImage(
-    file=relative_to_assets("entry_2.png"))
+    file=assets("entry_2.png"))
 entry_bg_2 = canvas.create_image(
     244.5,
     325.0,
@@ -139,7 +139,7 @@ canvas.create_text(
 )
 
 entry_image_3 = PhotoImage(
-    file=relative_to_assets("entry_3.png"))
+    file=assets("entry_3.png"))
 entry_bg_3 = canvas.create_image(
     244.5,
     394.0,
@@ -168,7 +168,7 @@ canvas.create_text(
 )
 
 entry_image_4 = PhotoImage(
-    file=relative_to_assets("entry_4.png"))
+    file=assets("entry_4.png"))
 entry_bg_4 = canvas.create_image(
     244.5,
     463.0,
@@ -197,7 +197,7 @@ canvas.create_text(
 )
 
 entry_image_5 = PhotoImage(
-    file=relative_to_assets("entry_5.png"))
+    file=assets("entry_5.png"))
 entry_bg_5 = canvas.create_image(
     747.5,
     256.0,
@@ -226,7 +226,7 @@ canvas.create_text(
 )
 
 entry_image_6 = PhotoImage(
-    file=relative_to_assets("entry_6.png"))
+    file=assets("entry_6.png"))
 entry_bg_6 = canvas.create_image(
     747.5,
     325.0,
@@ -255,7 +255,7 @@ canvas.create_text(
 )
 
 entry_image_7 = PhotoImage(
-    file=relative_to_assets("entry_7.png"))
+    file=assets("entry_7.png"))
 entry_bg_7 = canvas.create_image(
     747.5,
     394.0,
@@ -284,7 +284,7 @@ canvas.create_text(
 )
 
 entry_image_8 = PhotoImage(
-    file=relative_to_assets("entry_8.png"))
+    file=assets("entry_8.png"))
 entry_bg_8 = canvas.create_image(
     747.5,
     463.0,
@@ -304,7 +304,7 @@ entry_8.place(
 )
 
 button_image_1 = PhotoImage(
-    file=relative_to_assets("button_1.png"))
+    file=assets("button_1.png"))
 button_1 = Button(
     image=button_image_1,
     borderwidth=0,
@@ -328,7 +328,7 @@ canvas.create_rectangle(
     outline="")
 
 image_image_1 = PhotoImage(
-    file=relative_to_assets("image_1.png"))
+    file=assets("image_1.png"))
 image_1 = canvas.create_image(
     283.0,
     97.0,
@@ -345,7 +345,7 @@ canvas.create_text(
 )
 
 button_image_2 = PhotoImage(
-    file=relative_to_assets("button_2.png"))
+    file=assets("button_2.png"))
 button_2 = Button(
     image=button_image_2,
     borderwidth=0,
@@ -361,7 +361,7 @@ button_2.place(
 )
 
 button_image_3 = PhotoImage(
-    file=relative_to_assets("button_3.png"))
+    file=assets("button_3.png"))
 button_3 = Button(
     image=button_image_3,
     borderwidth=0,

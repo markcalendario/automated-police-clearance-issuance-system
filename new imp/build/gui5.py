@@ -14,7 +14,7 @@ OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\markc\Desktop\Programming\decode\new imp\build\assets\frame5")
 
 
-def relative_to_assets(path: str) -> Path:
+def assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
@@ -71,7 +71,7 @@ canvas.create_text(
 )
 
 image_image_1 = PhotoImage(
-    file=relative_to_assets("image_1.png"))
+    file=assets("image_1.png"))
 image_1 = canvas.create_image(
     93.0,
     38.0,
@@ -79,7 +79,7 @@ image_1 = canvas.create_image(
 )
 
 image_image_2 = PhotoImage(
-    file=relative_to_assets("image_2.png"))
+    file=assets("image_2.png"))
 image_2 = canvas.create_image(
     503.0,
     356.0,
@@ -87,7 +87,7 @@ image_2 = canvas.create_image(
 )
 
 button_image_1 = PhotoImage(
-    file=relative_to_assets("button_1.png"))
+    file=assets("button_1.png"))
 button_1 = Button(
     image=button_image_1,
     borderwidth=0,
@@ -103,7 +103,7 @@ button_1.place(
 )
 
 button_image_2 = PhotoImage(
-    file=relative_to_assets("button_2.png"))
+    file=assets("button_2.png"))
 button_2 = Button(
     image=button_image_2,
     borderwidth=0,
@@ -119,7 +119,7 @@ button_2.place(
 )
 
 button_image_3 = PhotoImage(
-    file=relative_to_assets("button_3.png"))
+    file=assets("button_3.png"))
 button_3 = Button(
     image=button_image_3,
     borderwidth=0,
@@ -135,7 +135,7 @@ button_3.place(
 )
 
 button_image_4 = PhotoImage(
-    file=relative_to_assets("button_4.png"))
+    file=assets("button_4.png"))
 button_4 = Button(
     image=button_image_4,
     borderwidth=0,
@@ -151,7 +151,7 @@ button_4.place(
 )
 
 image_image_3 = PhotoImage(
-    file=relative_to_assets("image_3.png"))
+    file=assets("image_3.png"))
 image_3 = canvas.create_image(
     230.0,
     356.0,
@@ -159,7 +159,7 @@ image_3 = canvas.create_image(
 )
 
 image_image_4 = PhotoImage(
-    file=relative_to_assets("image_4.png"))
+    file=assets("image_4.png"))
 image_4 = canvas.create_image(
     774.0,
     356.0,

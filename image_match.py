@@ -1,4 +1,4 @@
-from assets import relative_to_assets
+from assets import assets
 from fonts import fonts
 from tkinter import Canvas, Button, PhotoImage, Toplevel
 
@@ -51,7 +51,7 @@ class image_match:
 			font=(fonts.regular, 14 * -1)
 		)
 
-    self.logo_img = PhotoImage(file=relative_to_assets("image_match", "logo_img.png"))
+    self.logo_img = PhotoImage(file=assets("image_match", "logo_img.png"))
     
     self.logo = self.canvas.create_image(
 			503.0,
@@ -59,7 +59,7 @@ class image_match:
 			image=self.logo_img
 		)
 
-    self.big_logo_img = PhotoImage(file=relative_to_assets("image_match", "big_logo_img.png"))
+    self.big_logo_img = PhotoImage(file=assets("image_match", "big_logo_img.png"))
 
     self.big_logo = self.canvas.create_image(
 			503.0,

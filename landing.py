@@ -3,7 +3,7 @@ import threading
 from fonts import fonts
 from admin import admin
 from sign_out import sign_out
-from assets import relative_to_assets
+from assets import assets
 from manage_wanted_list import ManageWantedList
 from clearance_verification import clearance_verification
 from tkinter import Canvas, Button, PhotoImage, Toplevel
@@ -36,7 +36,7 @@ class landing_screen:
 		
 		# region Give Clearance Button
 
-		self.give_clearance_btn_img = PhotoImage(file=relative_to_assets("landing", "give_clearance_btn.png"))
+		self.give_clearance_btn_img = PhotoImage(file=assets("landing", "give_clearance_btn.png"))
 		
 		self.give_clearance_btn = Button(
 			self.window,
@@ -58,7 +58,7 @@ class landing_screen:
 
 		# region Verify Clearance Button
 
-		self.verify_clearance_btn_img = PhotoImage(file=relative_to_assets("landing", "verify_clearance_btn.png"))
+		self.verify_clearance_btn_img = PhotoImage(file=assets("landing", "verify_clearance_btn.png"))
 		
 		self.verify_clearance_btn = Button(
 			self.window,
@@ -80,7 +80,7 @@ class landing_screen:
 
 		# region Manage Wanted List Button
 
-		self.manage_wanted_list_btn_img = PhotoImage(file=relative_to_assets("landing", "manage_wanted_list_btn.png"))
+		self.manage_wanted_list_btn_img = PhotoImage(file=assets("landing", "manage_wanted_list_btn.png"))
 		
 		self.manage_wanted_list_btn = Button(
 			self.window,
@@ -102,7 +102,7 @@ class landing_screen:
 
 		# region Sign Out Button
 
-		self.sign_out_btn_img = PhotoImage(file=relative_to_assets("landing", "sign_out_btn.png"))
+		self.sign_out_btn_img = PhotoImage(file=assets("landing", "sign_out_btn.png"))
 		
 		self.sign_out_btn = Button(
 			self.window,
@@ -130,7 +130,7 @@ class landing_screen:
 			outline=""
 		)
 
-		self.logo_image = PhotoImage(file=relative_to_assets("landing", "logo.png"))
+		self.logo_image = PhotoImage(file=assets("landing", "logo.png"))
 		
 		self.logo = self.canvas.create_image(
 			93.0,

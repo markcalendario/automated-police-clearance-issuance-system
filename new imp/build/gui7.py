@@ -14,7 +14,7 @@ OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\markc\Desktop\Programming\decode\new imp\build\assets\frame7")
 
 
-def relative_to_assets(path: str) -> Path:
+def assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 
@@ -81,7 +81,7 @@ canvas.create_text(
 )
 
 button_image_1 = PhotoImage(
-    file=relative_to_assets("button_1.png"))
+    file=assets("button_1.png"))
 button_1 = Button(
     image=button_image_1,
     borderwidth=0,
@@ -105,7 +105,7 @@ canvas.create_rectangle(
     outline="")
 
 image_image_1 = PhotoImage(
-    file=relative_to_assets("image_1.png"))
+    file=assets("image_1.png"))
 image_1 = canvas.create_image(
     283.0,
     96.0,
@@ -122,7 +122,7 @@ canvas.create_text(
 )
 
 button_image_2 = PhotoImage(
-    file=relative_to_assets("button_2.png"))
+    file=assets("button_2.png"))
 button_2 = Button(
     image=button_image_2,
     borderwidth=0,
@@ -138,7 +138,7 @@ button_2.place(
 )
 
 button_image_3 = PhotoImage(
-    file=relative_to_assets("button_3.png"))
+    file=assets("button_3.png"))
 button_3 = Button(
     image=button_image_3,
     borderwidth=0,

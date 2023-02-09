@@ -2,11 +2,11 @@ from fonts import fonts
 import os
 from face_recognition import load_image_file, face_encodings, compare_faces
 from tkinter import Canvas, Button, PhotoImage, Toplevel, messagebox
-from navigation import go_back
 from image_match import image_match
 from face_model_processors import capture_client_face
-from assets import relative_to_assets
+from assets import assets
 from sign_out import sign_out
+from clearance_form import ClearanceForm
 
 class clearance_verification:
 	def __init__(self, parent_frame, root):
@@ -34,11 +34,11 @@ class clearance_verification:
 
 		# region Result Button
 
-		self.waiting_btn_img = PhotoImage(file=relative_to_assets("clearance_verification", "waiting_result_img.png"))
+		self.waiting_btn_img = PhotoImage(file=assets("clearance_verification", "waiting_result_img.png"))
 
-		self.failed_btn_img = PhotoImage(file=relative_to_assets("clearance_verification", "failed_result_img.png"))
+		self.failed_btn_img = PhotoImage(file=assets("clearance_verification", "failed_result_img.png"))
 		
-		self.passed_btn_img = PhotoImage(file=relative_to_assets("clearance_verification", "passed_result_img.png"))
+		self.passed_btn_img = PhotoImage(file=assets("clearance_verification", "passed_result_img.png"))
 
 		self.result_btn = Button(
 			self.window,
@@ -60,7 +60,7 @@ class clearance_verification:
 
 		# region Start Verification Button
 
-		self.start_verification_btn_img = PhotoImage(file=relative_to_assets("clearance_verification", "start_verification_btn.png"))
+		self.start_verification_btn_img = PhotoImage(file=assets("clearance_verification", "start_verification_btn.png"))
 		
 		self.start_verification_btn = Button(
 			self.window,
@@ -82,7 +82,7 @@ class clearance_verification:
 
 		# region Sign Out Button
 
-		self.sign_out_btn_image = PhotoImage(file=relative_to_assets("clearance_verification", "sign_out_btn.png"))
+		self.sign_out_btn_image = PhotoImage(file=assets("clearance_verification", "sign_out_btn.png"))
 		
 		self.sign_out_btn = Button(
 			self.window,
@@ -104,14 +104,14 @@ class clearance_verification:
 
 		# region Home Button
 
-		self.home_btn_img = PhotoImage(file=relative_to_assets("clearance_verification", "home_btn.png"))
+		self.home_btn_img = PhotoImage(file=assets("clearance_verification", "home_btn.png"))
 
 		self.home_btn = Button(
 				self.window,
 				image=self.home_btn_img,
 				borderwidth=0,
 				highlightthickness=0,
-				command=lambda: go_back(self.parent_frame.window, self.window),
+				command=self.handle_close,
 				relief="flat"
 		)
 
@@ -178,7 +178,7 @@ class clearance_verification:
 			font=(fonts.bold, 14 * -1)
 		)
 
-		self.nav_guide_dots_img = PhotoImage(file=relative_to_assets("clearance_verification", "waiting_dots.png"))
+		self.nav_guide_dots_img = PhotoImage(file=assets("clearance_verification", "guide_dots.png"))
 		
 		self.nav_guide_dots = self.canvas.create_image(
 			283.0,
@@ -190,7 +190,7 @@ class clearance_verification:
 				69.0,
 				237.0,
 				anchor="nw",
-				text="2. Once check and the client is not on the wanted list, get the client information.",
+				text="2. Once checked and the client is not on the wanted list, get the client information.",
 				fill="#000000",
 				font=("fonts.regular", 14 * -1)
 		)
@@ -281,8 +281,7 @@ class clearance_verification:
 		self.change_result_btn("PASSED")
 
 	def handle_passed_btn_click(self):
-		messagebox.showinfo("Face Verification Result", "This person does not have match face models from the database.")
-		# TODO
+		ClearanceForm(self, self.root).start()
 
 	def handle_wanted_match(self, wanted):
 		self.change_result_btn("FAILED", wanted)
@@ -296,11 +295,15 @@ class clearance_verification:
 		self.window.mainloop()
 
 	def show(self):
+		self.reset_face_verification_result()
 		self.window.deiconify()
 
 	def hide(self):
 		self.window.withdraw()
 
 	def handle_close(self):
-		self.hide()
 		self.parent_frame.show()
+		self.hide()
+
+	def reset_face_verification_result(self):
+		self.change_result_btn("WAITING")

@@ -1,10 +1,11 @@
 from fonts import fonts
 from sign_out import sign_out
 import os
-from tkinter import Canvas, Button, PhotoImage, Toplevel, filedialog, messagebox
-from assets import relative_to_assets
+from tkinter import Canvas, Button, PhotoImage, Toplevel, filedialog
+from tkinter.messagebox import askyesno, showerror, showinfo
+from assets import assets
 from face_model_processors import get_faces, has_one_face, zoom_to_client_face
-from cv2 import imread, imwrite, imshow, resize, INTER_AREA
+from cv2 import imread, imwrite
 from shutil import move
 from time import time
 
@@ -41,7 +42,7 @@ class ManageWantedList:
 			outline=""
 		)
 
-		self.sign_out_btn_img = PhotoImage(file=relative_to_assets("manage_wanted_list", "sign_out_btn.png"))
+		self.sign_out_btn_img = PhotoImage(file=assets("manage_wanted_list", "sign_out_btn.png"))
 
 		self.sign_out_btn = Button(
 			self.window,
@@ -59,7 +60,7 @@ class ManageWantedList:
 			height=21.0
 		)
 
-		self.home_btn_image = PhotoImage(file=relative_to_assets("manage_wanted_list", "home_btn.png"))
+		self.home_btn_image = PhotoImage(file=assets("manage_wanted_list", "home_btn.png"))
 		
 		self.home_btn = Button(
 			self.window,
@@ -104,13 +105,13 @@ class ManageWantedList:
 			font=(fonts.bold, 14 * -1)
 		)
 
-		self.wanted_code = self.canvas.create_text(
+		self.image_filename_preview = self.canvas.create_text(
 			535.0,
 			281.0,
 			anchor="nw",
 			text="FILENAME",
 			fill="#000000",
-			font=(fonts.bold, 32 * -1)
+			font=(fonts.bold, 20 * -1)
 		)
 
 		self.canvas.create_text(
@@ -122,7 +123,7 @@ class ManageWantedList:
 			font=(fonts.bold, 20 * -1)
 		)
 
-		self.remove_wanted_image_btn_img = PhotoImage(file=relative_to_assets("manage_wanted_list", "remove_wanted_image_btn.png"))
+		self.remove_wanted_image_btn_img = PhotoImage(file=assets("manage_wanted_list", "remove_wanted_image_btn.png"))
 		
 		self.remove_wanted_image_btn = Button(
 			self.window,
@@ -140,9 +141,9 @@ class ManageWantedList:
 			height=53.0
 		)
 
-		self.import_wanted_image_btn_img = PhotoImage(file=relative_to_assets("manage_wanted_list", "import_wanted_image_btn.png"))
+		self.import_wanted_image_btn_img = PhotoImage(file="./assets/manage_wanted_list/import_wanted_image_btn.png")
 		
-		self.select_wanted_image_btn = Button(
+		self.import_wanted_image_btn = Button(
 			self.window,
 			image=self.import_wanted_image_btn_img,
 			borderwidth=0,
@@ -151,14 +152,14 @@ class ManageWantedList:
 			relief="flat"
 		)
 
-		self.select_wanted_image_btn.place(
+		self.import_wanted_image_btn.place(
 			x=535.0,
-			y=484.0,
+			y=400.0,
 			width=388.0,
 			height=53.0
 		)
 
-		self.wanted_image = PhotoImage(file=relative_to_assets("manage_wanted_list", "wanted_image.png"))
+		self.wanted_image = PhotoImage(file=assets("manage_wanted_list", "wanted_image_placeholder.png"))
 		
 		self.wanted_preview = self.canvas.create_image(
 			230.0,
@@ -166,7 +167,7 @@ class ManageWantedList:
 			image=self.wanted_image
 		)
 
-		self.logo = PhotoImage(file=relative_to_assets("manage_wanted_list", "logo.png"))
+		self.logo = PhotoImage(file=assets("manage_wanted_list", "logo.png"))
 		
 		self.canvas.create_image(
 			93.0,
@@ -216,7 +217,9 @@ class ManageWantedList:
 		self.parent_frame.show()
 
 	def handle_import_wanted_image(self):
-		selected_image_path = filedialog.askopenfile(initialdir="./database/wanted_list", filetypes=[("Wanted file", "*.jpg;*.jpeg;*.png")])
+		selected_image_path = filedialog.askopenfile(
+			initialdir="./database/wanted_list", 
+			filetypes=[("Wanted file", "*.jpg;*.jpeg;*.png")])
 
 		if selected_image_path == None:
 			return
@@ -224,66 +227,97 @@ class ManageWantedList:
 		selected_image_path = selected_image_path.name
 		
 		if not os.path.exists(selected_image_path):
-			messagebox.showerror("Error", "Image file does not exists.")
+			showerror("Error", "Image file does not exists.")
 			return
 		
 		image = imread(selected_image_path)
 		faces = get_faces(image)
 		
 		if not len(faces):
-			messagebox.showerror("Error", "No face detected. Please make sure that it is a photo of a person.")
+			showerror("Error", "No face detected. Please make sure that it is a photo of a person.")
 			return
 		
 		if not has_one_face(faces):
-			messagebox.showerror("Error", "The image contains number of faces less or more than 1.")
+			showerror("Error", "The image contains number of faces less or more than 1.")
 			return
 
 		resized, cropped_image = zoom_to_client_face(faces[0], image)
-
 		if not resized:
-			messagebox.showerror("Error", "Can't process the image. Please make sure that the face is in the center.")
+			showerror("Error", "Can't process the image. Please make sure that the face is in the center.")
 			return
 		
-		imwrite(".selected_image_preview.png", cropped_image)
+		imwrite(".temp_preview.png", cropped_image)
 	
-		self.wanted_image.configure(file=".selected_image_preview.png")
-		self.change_wanted_code_by_file_basename(selected_image_path)
+		self.wanted_image.configure(file=".temp_preview.png")
+		self.change_filename_preview(selected_image_path)
+		
+		self.toggle_button_state()
+		response = askyesno("Are you sure?", "Do you really want to import this image as a wanted?")
+		self.toggle_button_state()
+		self.reset_previews()
 
-		response = messagebox.askquestion("Are you sure?", "Do you really want to import this image as a wanted?")
-
-		if response == 'no':
+		if not response:
+			os.remove(".temp_preview.png")
+			showinfo("Importation Cancelled", "Importation of the selected wanted image cancelled.")
 			return
 		
-		move(
-			".selected_image_preview.png", 
-			"./database/wanted_list/WANTED_{}.png".format(str(int(time())))
-		)
-		
+		wanted_image_new_filename = f"WANTED_{str(time()).split('.')[0]}"
+		move(".temp_preview.png", f"./database/wanted_list/{wanted_image_new_filename}.png")
+		showinfo("Success", f"{wanted_image_new_filename} imported successfully.")
 
-	def change_wanted_code_by_file_basename(self, selected_image_path):
-		base_name = os.path.basename(selected_image_path).split(".")[0]
-		self.canvas.itemconfig(self.wanted_code, text=base_name)
+	def toggle_button_state(self):
+		is_enabled = self.import_wanted_image_btn["state"] == "normal" or self.remove_wanted_image_btn["state"] == "enabled"
+
+		if is_enabled:
+			self.import_wanted_image_btn.config(state="disabled")
+			self.remove_wanted_image_btn.config(state="disabled")
+			return
+		
+		self.import_wanted_image_btn.config(state="normal")
+		self.remove_wanted_image_btn.config(state="normal")
+
+	def reset_previews(self):
+		self.change_filename_preview()
+		self.wanted_image.configure(file=assets("manage_wanted_list", "wanted_image_placeholder.png"))
+
+	def change_filename_preview(self, selected_image_path=None):
+		filename = "FILENAME"
+		
+		if selected_image_path != None:
+			filename = os.path.basename(selected_image_path).split(".")[0][:30]
+			
+		self.canvas.itemconfig(self.image_filename_preview, text=filename)
 		
 	def handle_remove_wanted_image(self):
-		wanted_image_path = self.selected_wanted_image_path
+		selected_image_path = filedialog.askopenfile(
+			initialdir="./database/wanted_list", 
+			filetypes=[("Wanted file", "*.jpg;*.jpeg;*.png")])
 		
-		if wanted_image_path == None:
-			messagebox.showerror("Error", "Select file first.")
-			return False
+		if selected_image_path == None: return
 
-		if not os.path.exists(wanted_image_path):
-			messagebox.showerror("Error", "File image does not exists.")
-			return False
-		
-		confirm = messagebox.askyesno("Delete?", "Are you sure do you want to delete this wanted image?")
-		if not confirm:
-			return False
-		
-		try: 
-			os.remove(wanted_image_path)
-			messagebox.showinfo("Success", "Wanted image removed.")
-			self.wanted_image.configure(file=relative_to_assets("manage_wanted_list", "wanted_image.png"))
-			self.change_wanted_code_by_file_basename("FILENAME")
-		except: 
-			messagebox.showerror("Error", "Unable to remove wanted image.")
+		selected_image_path = selected_image_path.name
 
+		if not os.path.exists(selected_image_path):
+			showerror("Error", "File does not exists.")
+			return
+		
+		in_wanted_list_dir = "wanted_list" in selected_image_path
+		
+		if not in_wanted_list_dir:
+			showerror("Error", "You cannot remove files outside from wanted list folder.")
+			return 
+
+		self.wanted_image.configure(file=selected_image_path)
+		self.change_filename_preview(selected_image_path)
+
+		self.toggle_button_state()
+		response = askyesno("Are you sure?", "Do you really want to delete this wanted image?")
+		self.toggle_button_state()
+		self.reset_previews()
+		
+		if not response:
+			showinfo("Deletion Cancelled", "Wanted image deletion cancelled.")
+			return
+		
+		os.remove(selected_image_path)
+		showinfo("Success", "Wanted image deleted successfully.")
