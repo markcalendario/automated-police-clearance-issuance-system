@@ -1,6 +1,7 @@
-from tkinter import Tk, Canvas, Button, PhotoImage
+from tkinter import Toplevel, Canvas, Button, PhotoImage
 from assets import assets
 from fonts import fonts
+from sign_out import sign_out
 
 class ClearanceStatusEnum:
 	REVOKED: -2
@@ -10,7 +11,8 @@ class ClearanceStatusEnum:
 
 class ManageClearanceList:
 	def __init__(self, parent_frame, root):
-		self.window = Tk()
+		self.root = root
+		self.window = Toplevel(parent_frame.window)
 		
 		self.window.geometry("992x594")
 		self.window.configure(bg = "#F5F5F5")
@@ -309,7 +311,9 @@ class ManageClearanceList:
 			height=21.0
 		)
 
+	def start(self):
 		self.window.mainloop()
+		self.parent_frame.hide()
 
 	def place_revoke_button(self):
 		self.revoke_clearance_btn.place(
@@ -342,5 +346,3 @@ class ManageClearanceList:
 		self.canvas.itemconfig(self.verification_result_icon, image=icon)
 
 
-
-ManageClearanceList("", "")
