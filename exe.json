@@ -18,6 +18,10 @@
    "value": true
   },
   {
+   "optionDest": "icon_file",
+   "value": "C:/Users/markc/Desktop/Programming/decode/assets/global/favicon.ico"
+  },
+  {
    "optionDest": "ascii",
    "value": false
   },

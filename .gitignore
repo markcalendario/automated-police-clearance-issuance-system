@@ -1,2 +1,14 @@
+# Remove unnecessary files
 .venv
 __pycache__
+output
+
+# Exclude all database files
+database/clearance_list/*
+!database/clearance_list/
+
+database/wanted_list/*
+!database/wanted_list/
+
+client_temporary_files/*
+!client_temporary_files/

@@ -403,11 +403,12 @@ class ClearanceForm:
 		return True, "Valid"
 
 	def generate_clearance_number(self):
-		t = localtime(time())
-		return f"CLRNC_{t.tm_mon}{t.tm_mday}{t.tm_year}_{t.tm_hour}{t.tm_min}{t.tm_sec}"
+		now = datetime.now()
+		clearance_number = now.strftime('%m%d%Y_%H%M%S')
+		return f"CLRNC_{clearance_number}"
 
 	def save_clearance_record(self):
-		clearance_data_str = f"NAME={self.first_name} {self.middle_name} {self.last_name} {self.middle_name}\nADDRESS={self.address}\nBIRTHDATE={self.birthdate}\nBIRTHPLACE={self.birth_place}\nPURPOSE={self.purpose}"
+		clearance_data_str = f"NAME={self.first_name} {self.middle_name} {self.last_name} {self.middle_name}\nADDRESS={self.address}\nBIRTHDATE={self.birthdate}\nBIRTHPLACE={self.birth_place}\nPURPOSE={self.purpose}\n"
 
 		file = open(f"./database/clearance_list/{self.clearance_number}.txt", "w")
 		file.write(clearance_data_str)
