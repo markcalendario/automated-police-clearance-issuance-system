@@ -451,5 +451,3 @@ class ClearanceForm:
 		self.generate_qr_code()
 
 		IssuanceArea(self, self.root).start()
-
-		
