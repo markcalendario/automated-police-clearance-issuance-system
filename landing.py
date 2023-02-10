@@ -6,6 +6,7 @@ from sign_out import sign_out
 from assets import assets
 from manage_wanted_list import ManageWantedList
 from client_verification import ClientVerification
+from manage_clearance_list import ManageClearanceList
 from tkinter import Canvas, Button, PhotoImage, Toplevel
 
 class landing_screen:
@@ -58,18 +59,18 @@ class landing_screen:
 
 		# region Verify Clearance Button
 
-		self.verify_clearance_btn_img = PhotoImage(file=assets("landing", "verify_clearance_btn.png"))
+		self.manage_clearance_btn_img = PhotoImage(file=assets("landing", "manage_clearance_btn.png"))
 		
-		self.verify_clearance_btn = Button(
+		self.manage_clearance_btn = Button(
 			self.window,
-			image=self.verify_clearance_btn_img,
+			image=self.manage_clearance_btn_img,
 			borderwidth=0,
 			highlightthickness=0,
-			command=lambda: print("Verify Clearance Button clicked"),
+			command=self.handle_manage_clearance_list_btn_click,
 			relief="flat"
 		)
 
-		self.verify_clearance_btn.place(
+		self.manage_clearance_btn.place(
 			x=367.0,
 			y=293.0,
 			width=258.0,
@@ -227,3 +228,6 @@ class landing_screen:
 
 	def handle_manage_wanted_list_btn_click(self):
 		ManageWantedList(self, self.root).start()
+
+	def handle_manage_clearance_list_btn_click(self):
+		ManageClearanceList(self, self.root).start()	

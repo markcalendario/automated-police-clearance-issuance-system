@@ -1,27 +1,7 @@
-from cv2 import destroyAllWindows, VideoCapture, rectangle, putText, FONT_HERSHEY_SIMPLEX, CascadeClassifier, cvtColor, COLOR_BGR2GRAY, CASCADE_SCALE_IMAGE, resize, imwrite, imshow, waitKey, CAP_DSHOW, INTER_AREA, CAP_PROP_FRAME_WIDTH, CAP_PROP_FRAME_HEIGHT, namedWindow, resizeWindow, WINDOW_NORMAL
 import global_vars
 from tkinter import messagebox
-
-def get_available_camera_device():
-
-	for i in range(0, 11):
-		camera = VideoCapture(i, CAP_DSHOW)
-
-		if camera.isOpened():
-			camera.release()
-			return i
-		
-	return -1
-
-def draw_camera_guides(frame):
-	x, y, w, h = 0, 0, 200, 70
-
-	# Draw black background rectangle
-	rectangle(frame, (x, x), (x + w, y + h), (0, 0, 0), -1)
-	
-	# Add texts
-	putText(frame, "[SPACE] to capture.", (x + 20, y + 20), FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
-	putText(frame, "[ESC] to exit.", (x + 20, y + 50), FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 2)
+from cv2 import destroyAllWindows, rectangle, CascadeClassifier, cvtColor, COLOR_BGR2GRAY, CASCADE_SCALE_IMAGE, resize, imwrite, imshow, waitKey
+from camera import open_camera, display_cam_key_guides
 
 def get_faces(frame):
 
@@ -39,13 +19,12 @@ def get_faces(frame):
 	
 	return faces
 
-def draw_face_rectangle(faces, frame):
+def draw_rectangle_on_face(faces, frame):
 	for (x, y, w, h) in faces:
 		rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
 def has_one_face(faces):
 	return len(faces) == 1
-
 
 def zoom_to_client_face(face, frame):
 	x, y, w, h = face
@@ -58,19 +37,14 @@ def zoom_to_client_face(face, frame):
 		return False, None
 
 def save_capture(image):
-	imwrite("client_temporary_files/client.png", image)
+	imwrite("./client_temporary_files/client.png", image)
 
 def capture_client_face():
 
 	original_frame = None
 	faces = None
-	camera_index = get_available_camera_device()
 
-	if camera_index == -1:
-		messagebox.showinfo("Face Verification", "No camera detected. Please make sure that you have available camera.")
-		return False
-
-	cam = VideoCapture(camera_index, CAP_DSHOW)
+	cam = open_camera()
 
 	while True:
 		capturing, frame = cam.read()
@@ -82,9 +56,9 @@ def capture_client_face():
 			return False
 		
 		original_frame = frame.copy()
-		draw_camera_guides(frame)
+		display_cam_key_guides(frame)
 		faces = get_faces(frame)
-		draw_face_rectangle(faces, frame)
+		draw_rectangle_on_face(faces, frame)
 
 		imshow("Client Verification Camera", frame)
 

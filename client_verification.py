@@ -8,7 +8,7 @@ from assets import assets
 from sign_out import sign_out
 from clearance_form import ClearanceForm
 
-class client_verification:
+class ClientVerification:
 	def __init__(self, parent_frame, root):
 
 		self.root = root

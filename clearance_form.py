@@ -408,7 +408,7 @@ class ClearanceForm:
 		return f"CLRNC_{clearance_number}"
 
 	def save_clearance_record(self):
-		clearance_data_str = f"NAME={self.first_name} {self.middle_name} {self.last_name} {self.middle_name}\nADDRESS={self.address}\nBIRTHDATE={self.birthdate}\nBIRTHPLACE={self.birth_place}\nPURPOSE={self.purpose}\n"
+		clearance_data_str = f"FIRSTNAME={self.first_name}\nMIDDLENAME={self.middle_name}\nLASTNAME={self.last_name}\nSUFFIX={self.suffix}\nADDRESS={self.address}\nBIRTHDATE={self.birthdate}\nBIRTHPLACE={self.birth_place}\nPURPOSE={self.purpose}\nREVOKED=0\n"
 
 		file = open(f"./database/clearance_list/{self.clearance_number}.txt", "w")
 		file.write(clearance_data_str)

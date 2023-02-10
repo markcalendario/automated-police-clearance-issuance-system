@@ -2,21 +2,29 @@ from tkinter import Toplevel, Canvas, Button, PhotoImage
 from assets import assets
 from fonts import fonts
 from sign_out import sign_out
-
-class ClearanceStatusEnum:
-	REVOKED: -2
-	EXPIRED: -1
-	INVALID: 0
-	VALID: 0
+from qrcode_processors import start_qrcode_scan
+from tkinter.messagebox import showwarning, showerror, showinfo, askyesno
+from enum import Enum
+from datetime import datetime, timedelta
+class ClearanceStatusEnum(Enum):
+	REVOKED = -2
+	EXPIRED = -1
+	INVALID = 0
+	VALID = 1
 
 class ManageClearanceList:
 	def __init__(self, parent_frame, root):
 		self.root = root
+		self.parent_frame = parent_frame
+
 		self.window = Toplevel(parent_frame.window)
-		
 		self.window.geometry("992x594")
 		self.window.configure(bg = "#F5F5F5")
 		self.window.resizable(False, False)
+		self.window.protocol("WM_DELETE_WINDOW", self.handle_close)
+		self.window.wm_title("Police Clearance Issuance System")
+
+		self.scanned_clearance_number = None
 
 		self.canvas = Canvas(
 			self.window,
@@ -30,7 +38,7 @@ class ManageClearanceList:
 
 		self.canvas.place(x = 0, y = 0)
 		
-		self.canvas.create_text(
+		self.title = self.canvas.create_text(
 			69.0,
 			106.0,
 			anchor="nw",
@@ -43,7 +51,7 @@ class ManageClearanceList:
 			69.0,
 			154.0,
 			anchor="nw",
-			text="Click the button below to verify a clearance by scanning the embedded QR Code in the document. Once verified, information will be shown below.",
+			text="Click the button below to verify a clearance by scanning the embedded QR Code in the document. \nOnce verified, status and information will be shown below.",
 			fill="#000000",
 			font=(fonts.regular, 14 * -1)
 		)
@@ -55,7 +63,7 @@ class ManageClearanceList:
 			image=self.verify_clearance_btn_img,
 			borderwidth=0,
 			highlightthickness=0,
-			command=lambda: print("button_1 clicked"),
+			command=self.handle_verify_clearance_button_click,
 			relief="flat"
 		)
 
@@ -91,7 +99,7 @@ class ManageClearanceList:
 			image=self.revoke_clearance_btn_img,
 			borderwidth=0,
 			highlightthickness=0,
-			command=lambda: print("button_3 clicked"),
+			command=self.handle_revoke_button_click,
 			relief="flat"
 		)
 
@@ -104,7 +112,14 @@ class ManageClearanceList:
 			image=""
 		)
 
-
+		self.status_description = self.canvas.create_text(
+			634.0,
+			220.0,
+			anchor="nw",
+			text="",
+			fill="#000000",
+			font=(fonts.bold, 13 * -1)
+		)
 
 		self.canvas.create_text(
 			69.0,
@@ -282,7 +297,7 @@ class ManageClearanceList:
 			image=self.sign_out_img,
 			borderwidth=0,
 			highlightthickness=0,
-			command=lambda: print("button_4 clicked"),
+			command=lambda: sign_out(self.root),
 			relief="flat"
 		)
 
@@ -300,7 +315,7 @@ class ManageClearanceList:
 			image=self.home_btn_img,
 			borderwidth=0,
 			highlightthickness=0,
-			command=lambda: print("button_5 clicked"),
+			command=self.handle_close,
 			relief="flat"
 		)
 
@@ -312,8 +327,89 @@ class ManageClearanceList:
 		)
 
 	def start(self):
-		self.window.mainloop()
 		self.parent_frame.hide()
+		self.window.mainloop()
+
+	def hide(self):
+		self.window.withdraw()
+
+	def show(self):
+		self.window.deiconify()
+
+	def handle_close(self):
+		self.parent_frame.show()
+		self.hide()
+
+	def is_clearance_exists(self):
+		try:
+			clearance = open(f"./database/clearance_list/{self.scanned_clearance_number}.txt", "r")
+			clearance.close()
+		except:
+			return False
+		
+		return True
+	
+	def is_clearance_revoked(self):
+		clearance = open(f"./database/clearance_list/{self.scanned_clearance_number}.txt", "r")
+		clearance_data = clearance.readlines()
+		clearance.close()
+
+		is_revoked = None
+
+		for data in clearance_data:
+			if "REVOKED" in data:
+				is_revoked = int(data.split("=", 1)[1])
+				break
+
+		if is_revoked:
+			return True
+		
+		return False
+	
+	def is_clearance_expired(self):
+		now = datetime.now()
+		expiration_date = self.get_expiration_date()
+
+		if now > expiration_date:
+			return True
+		
+		return False
+	
+	def display_clearance_data(self):
+		clearance = open(f"./database/clearance_list/{self.scanned_clearance_number}.txt", "r")
+		clearance_data = clearance.readlines()
+		clearance.close()
+
+		firstname = clearance_data[0].split("=", 1)[1]
+		middlename = clearance_data[1].split("=", 1)[1]
+		lastname = clearance_data[2].split("=", 1)[1]
+		suffix = clearance_data[3].split("=", 1)[1]
+		address = clearance_data[4].split("=", 1)[1]
+		birthdate = clearance_data[5].split("=", 1)[1]
+		birthplace = clearance_data[6].split("=", 1)[1]
+		purpose = clearance_data[7].split("=", 1)[1]
+		
+		self.canvas.itemconfigure(self.first_name, text=firstname)
+		self.canvas.itemconfigure(self.middle_name, text=middlename)
+		self.canvas.itemconfigure(self.last_name, text=lastname)
+		self.canvas.itemconfigure(self.suffix, text=suffix)
+		self.canvas.itemconfigure(self.birthdate, text=birthdate)
+		self.canvas.itemconfigure(self.birth_place, text=birthplace)
+		self.canvas.itemconfigure(self.address, text=address)
+		self.canvas.itemconfigure(self.purpose, text=purpose)
+
+	def get_clearance_status(self):
+
+		if not self.is_clearance_exists():
+			return ClearanceStatusEnum.INVALID.value
+
+		if self.is_clearance_revoked():
+			return ClearanceStatusEnum.REVOKED.value
+
+		if self.is_clearance_expired():
+			return ClearanceStatusEnum.EXPIRED.value
+		
+		return ClearanceStatusEnum.VALID.value
 
 	def place_revoke_button(self):
 		self.revoke_clearance_btn.place(
@@ -326,23 +422,97 @@ class ManageClearanceList:
 	def unplace_revoke_button(self):
 		self.revoke_clearance_btn.place_forget()
 
-	def show_clearance_verification_result(self, result_type, description):
-	
-		# Show description
-		self.result_description = self.canvas.create_text(
-			634.0,
-			220.0,
-			anchor="nw",
-			text=description,
-			fill="#000000",
-			font=(fonts.bold, 13 * -1)
-		)
+	def reset_clearance_verification_state(self):
+		self.scanned_clearance_expiry = None
+		self.scanned_clearance_number = None
+		self.scanned_clearance_status = None
+
+		self.unplace_revoke_button()
+		self.canvas.itemconfigure(self.status_description, text="")
+		self.canvas.itemconfigure(self.title, text="Manage Clearance")
+		self.canvas.itemconfigure(self.verification_result_icon, image="")
+
+		self.canvas.itemconfigure(self.first_name, text="-")
+		self.canvas.itemconfigure(self.middle_name, text="-")
+		self.canvas.itemconfigure(self.last_name, text="-")
+		self.canvas.itemconfigure(self.suffix, text="-")
+		self.canvas.itemconfigure(self.birthdate, text="-")
+		self.canvas.itemconfigure(self.birth_place, text="-")
+		self.canvas.itemconfigure(self.address, text="-")
+		self.canvas.itemconfigure(self.purpose, text="-")
+
+	def show_clearance_verification_result(self):
+		status = self.scanned_clearance_status
+		description = ""
+		icon = self.error_img
+
+		if status == ClearanceStatusEnum.INVALID.value:
+			description = "No records found for this clearance."
+
+		if status == ClearanceStatusEnum.REVOKED.value:
+			description = "This clearance was revoked."
+
+		if status == ClearanceStatusEnum.EXPIRED.value:
+			description = f"This clearance expired in {self.scanned_clearance_expiry}."
 		
-		# Show status icon
-		icon = self.check_img
-		if result_type in [status.value for status in ClearanceStatusEnum]:
-			icon = self.error_img
+		if status == ClearanceStatusEnum.VALID.value:
+			description = f"This clearance is valid until {self.scanned_clearance_expiry}."
+			icon = self.check_img
+		
+		# Show description
 
-		self.canvas.itemconfig(self.verification_result_icon, image=icon)
+		self.canvas.itemconfigure(self.status_description, text=description)
+		self.canvas.itemconfigure(self.verification_result_icon, image=icon)
 
+	def get_expiration_date(self):
+		clearance_number_date = self.scanned_clearance_number.split("_")[1]
+		date_in_clearance_number = datetime.strptime(clearance_number_date, "%m%d%Y")
+		return date_in_clearance_number + timedelta(days=180)
 
+	def handle_verify_clearance_button_click(self):
+		self.reset_clearance_verification_state()
+		clearance_number = start_qrcode_scan()
+
+		if not clearance_number:
+			showwarning("Warning", "Clearance scanning did not finish.")
+			return
+
+		self.scanned_clearance_number = clearance_number
+		self.scanned_clearance_status = self.get_clearance_status()
+
+		if self.scanned_clearance_status == ClearanceStatusEnum.INVALID.value:
+			self.show_clearance_verification_result()
+			return
+
+		if self.scanned_clearance_status == ClearanceStatusEnum.VALID.value:
+			self.place_revoke_button()
+		
+
+		self.canvas.itemconfigure(self.title, text=f"Result for {self.scanned_clearance_number}") 
+		self.scanned_clearance_expiry = datetime.strftime(self.get_expiration_date(), "%b. %d, %Y")
+		self.display_clearance_data()
+		self.show_clearance_verification_result()
+
+	def handle_revoke_button_click(self):
+		response = askyesno("Are you sure?", f"Do you really want to revoke {self.scanned_clearance_number}?")
+
+		if not response:
+			return
+		
+		clearance = None
+		clearance_data = None
+		try:
+			clearance = open(f"./database/clearance_list/{self.scanned_clearance_number}.txt", "r")
+			clearance_data = clearance.read()
+			clearance.close()
+		except FileNotFoundError:
+			showerror("Error", f"Document {self.scanned_clearance_number} not found!")
+			return
+		
+		clearance = open(f"./database/clearance_list/{self.scanned_clearance_number}.txt", "w")		
+		clearance_data = clearance_data.replace("REVOKED=0", "REVOKED=1")
+		clearance.write(clearance_data)
+		clearance.close()
+
+		showinfo("Success", f"{self.scanned_clearance_number} has been revoked successfully.")
+		self.reset_clearance_verification_state()
