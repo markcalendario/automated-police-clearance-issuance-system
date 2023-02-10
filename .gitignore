@@ -6,10 +6,10 @@ tempCodeRunnerFile.py
 
 # Exclude all database files
 database/clearance_list/*
-!database/clearance_list/
+!database/clearance_list/.gitkeep
 
 database/wanted_list/*
-!database/wanted_list/
+!database/wanted_list/.gitkeep
 
 client_temporary_files/*
-!client_temporary_files/
+!client_temporary_files/.gitkeep
