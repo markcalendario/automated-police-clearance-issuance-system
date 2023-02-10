@@ -8,7 +8,7 @@ from assets import assets
 from sign_out import sign_out
 from clearance_form import ClearanceForm
 
-class clearance_verification:
+class client_verification:
 	def __init__(self, parent_frame, root):
 
 		self.root = root
@@ -34,11 +34,11 @@ class clearance_verification:
 
 		# region Result Button
 
-		self.waiting_btn_img = PhotoImage(file=assets("clearance_verification", "waiting_result_img.png"))
+		self.waiting_btn_img = PhotoImage(file=assets("client_verification", "waiting_result_img.png"))
 
-		self.failed_btn_img = PhotoImage(file=assets("clearance_verification", "failed_result_img.png"))
+		self.failed_btn_img = PhotoImage(file=assets("client_verification", "failed_result_img.png"))
 		
-		self.passed_btn_img = PhotoImage(file=assets("clearance_verification", "passed_result_img.png"))
+		self.passed_btn_img = PhotoImage(file=assets("client_verification", "passed_result_img.png"))
 
 		self.result_btn = Button(
 			self.window,
@@ -60,7 +60,7 @@ class clearance_verification:
 
 		# region Start Verification Button
 
-		self.start_verification_btn_img = PhotoImage(file=assets("clearance_verification", "start_verification_btn.png"))
+		self.start_verification_btn_img = PhotoImage(file=assets("client_verification", "start_verification_btn.png"))
 		
 		self.start_verification_btn = Button(
 			self.window,
@@ -82,7 +82,7 @@ class clearance_verification:
 
 		# region Sign Out Button
 
-		self.sign_out_btn_image = PhotoImage(file=assets("clearance_verification", "sign_out_btn.png"))
+		self.sign_out_btn_image = PhotoImage(file=assets("client_verification", "sign_out_btn.png"))
 		
 		self.sign_out_btn = Button(
 			self.window,
@@ -104,7 +104,7 @@ class clearance_verification:
 
 		# region Home Button
 
-		self.home_btn_img = PhotoImage(file=assets("clearance_verification", "home_btn.png"))
+		self.home_btn_img = PhotoImage(file=assets("client_verification", "home_btn.png"))
 
 		self.home_btn = Button(
 				self.window,
@@ -178,7 +178,7 @@ class clearance_verification:
 			font=(fonts.bold, 14 * -1)
 		)
 
-		self.nav_guide_dots_img = PhotoImage(file=assets("clearance_verification", "guide_dots.png"))
+		self.nav_guide_dots_img = PhotoImage(file=assets("client_verification", "guide_dots.png"))
 		
 		self.nav_guide_dots = self.canvas.create_image(
 			283.0,

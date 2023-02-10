@@ -5,7 +5,7 @@ from admin import admin
 from sign_out import sign_out
 from assets import assets
 from manage_wanted_list import ManageWantedList
-from clearance_verification import clearance_verification
+from client_verification import ClientVerification
 from tkinter import Canvas, Button, PhotoImage, Toplevel
 
 class landing_screen:
@@ -223,7 +223,7 @@ class landing_screen:
 		sign_out(self.root)
 
 	def handle_show_give_clearance(self):
-		clearance_verification(self, self.root).start()
+		ClientVerification(self, self.root).start()
 
 	def handle_manage_wanted_list_btn_click(self):
 		ManageWantedList(self, self.root).start()
