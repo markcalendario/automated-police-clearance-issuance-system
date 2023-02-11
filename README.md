@@ -38,3 +38,5 @@ A final project for Modelling and Simulation
 
 For support, visit https://markcalendario10.web.app and https://github.com/markcalendario
 
+## All Rights Reserved
+© Mark Kenneth Calendario
