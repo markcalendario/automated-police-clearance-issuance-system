@@ -3,6 +3,7 @@
 __pycache__
 output
 tempCodeRunnerFile.py
+test.py
 
 # Exclude all database files
 database/clearance_list/*
