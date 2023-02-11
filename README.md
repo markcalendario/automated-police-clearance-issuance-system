@@ -13,13 +13,13 @@ A final project for Modelling and Simulation
 
 - Automated generation of printable clearance for clients who does not have derogatory records
 
-- Checking of scanned/selected clearance status if
+- Checking of Scanned/Selected Clearance Status If
     - Revoked
     - Expired (clearance is valid for 6 months)
     - Valid
     - Invalid
 
-- Database driven system using file handling
+- Database Driven System Using File Handling
     - Clients data (to counter forgery of QR code)
     - Wanted list
 
