@@ -1,1 +1,1 @@
-face_model_location = "./models/haarcascade_frontalface_default.xml"
+face_model_location = "./face_recognition_models/haarcascade_frontalface_default.xml"
