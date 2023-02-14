@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "C:/Users/markc/Desktop/Programming/decode/app.py"
+   "value": "C:/Users/markc/Desktop/Programming/automated-police-clearance-issuance-system/app.py"
   },
   {
    "optionDest": "onefile",
@@ -15,11 +15,11 @@
   },
   {
    "optionDest": "console",
-   "value": true
+   "value": false
   },
   {
    "optionDest": "icon_file",
-   "value": "C:/Users/markc/Desktop/Programming/decode/assets/global/favicon.ico"
+   "value": "C:/Users/markc/Desktop/Programming/automated-police-clearance-issuance-system/assets/global/favicon.ico"
   },
   {
    "optionDest": "ascii",
@@ -71,27 +71,23 @@
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/markc/Desktop/Programming/decode/assets;assets/"
+   "value": "C:/Users/markc/Desktop/Programming/automated-police-clearance-issuance-system/assets;assets/"
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/markc/Desktop/Programming/decode/clearance_template;clearance_template/"
+   "value": "C:/Users/markc/Desktop/Programming/automated-police-clearance-issuance-system/clearance_template;clearance_template/"
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/markc/Desktop/Programming/decode/client_temporary_files;client_temporary_files/"
+   "value": "C:/Users/markc/Desktop/Programming/automated-police-clearance-issuance-system/client_temporary_files;client_temporary_files/"
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/markc/Desktop/Programming/decode/database;database/"
+   "value": "C:/Users/markc/Desktop/Programming/automated-police-clearance-issuance-system/database;database/"
   },
   {
    "optionDest": "datas",
-   "value": "C:/Users/markc/Desktop/Programming/decode/models;models/"
-  },
-  {
-   "optionDest": "datas",
-   "value": "C:/Users/markc/Desktop/Programming/decode/.venv/Lib/site-packages/face_recognition_models;face_recognition_models/"
+   "value": "C:/Users/markc/Desktop/Programming/automated-police-clearance-issuance-system/face_recognition_models;face_recognition_models/"
   }
  ],
  "nonPyinstallerOptions": {
