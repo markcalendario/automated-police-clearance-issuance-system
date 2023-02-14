@@ -20,7 +20,8 @@ class landing_screen:
 		self.window.protocol("WM_DELETE_WINDOW",  lambda: None)
 		self.window.wm_title("Police Clearance Issuance System")
 		self.window.resizable(False, False)
-
+		self.window.iconbitmap("./assets/global/favicon.ico")
+		
 		# Initialize Application Design and Layout
 
 		self.canvas = Canvas(

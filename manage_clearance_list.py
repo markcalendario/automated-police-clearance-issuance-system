@@ -24,7 +24,8 @@ class ManageClearanceList:
 		self.window.resizable(False, False)
 		self.window.protocol("WM_DELETE_WINDOW", self.handle_close)
 		self.window.wm_title("Police Clearance Issuance System")
-
+		self.window.iconbitmap("./assets/global/favicon.ico")
+		
 		self.clearance_code = None
 		self.clearance_expiry = None
 		self.clearance_status = None

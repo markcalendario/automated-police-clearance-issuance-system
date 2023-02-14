@@ -15,7 +15,8 @@ class IssuanceArea:
 		self.window.configure(bg = "#F5F5F5")
 		self.window.resizable(False, False)
 		self.window.protocol("WM_DELETE_WINDOW",  self.handle_close)
-
+		self.window.iconbitmap("./assets/global/favicon.ico")
+		
 		self.canvas = Canvas(
 			self.window,
 			bg = "#F5F5F5",

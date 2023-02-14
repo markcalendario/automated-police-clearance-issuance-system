@@ -3,16 +3,17 @@ from fonts import fonts
 from tkinter import Canvas, Button, PhotoImage, Toplevel
 
 class image_match:
-  def __init__(self, parent_frame, wanted_image):
-    
-    self.parent_frame = parent_frame
-    self.window = Toplevel(self.parent_frame)
-    self.window.geometry("992x594")
-    self.window.configure(bg = "#F5F5F5")
-    self.window.resizable(False, False)
-    self.window.protocol("WM_DELETE_WINDOW",  self.handle_close)
-    
-    self.canvas = Canvas(
+	def __init__(self, parent_frame, wanted_image):
+		
+		self.parent_frame = parent_frame
+		self.window = Toplevel(self.parent_frame)
+		self.window.geometry("992x594")
+		self.window.configure(bg = "#F5F5F5")
+		self.window.resizable(False, False)
+		self.window.protocol("WM_DELETE_WINDOW",  self.handle_close)
+		self.window.iconbitmap("./assets/global/favicon.ico")
+				
+		self.canvas = Canvas(
 			self.window,
 			bg = "#F5F5F5",
 			height = 594,
@@ -22,9 +23,9 @@ class image_match:
 			relief = "ridge"
 		)
 
-    self.canvas.place(x = 0, y = 0)
+		self.canvas.place(x = 0, y = 0)
 		
-    self.canvas.create_rectangle(
+		self.canvas.create_rectangle(
 			0.0,
 			0.0,
 			992.0,
@@ -33,7 +34,7 @@ class image_match:
 			outline=""
 		)
 
-    self.canvas.create_text(
+		self.canvas.create_text(
 			69.0,
 			106.0,
 			anchor="nw",
@@ -42,7 +43,7 @@ class image_match:
 			font=(fonts.bold, 30 * -1)
 		)
 
-    self.canvas.create_text(
+		self.canvas.create_text(
 			69.0,
 			152.0,
 			anchor="nw",
@@ -51,41 +52,41 @@ class image_match:
 			font=(fonts.regular, 14 * -1)
 		)
 
-    self.logo_img = PhotoImage(file=assets("image_match", "logo_img.png"))
-    
-    self.logo = self.canvas.create_image(
+		self.logo_img = PhotoImage(file=assets("image_match", "logo_img.png"))
+		
+		self.logo = self.canvas.create_image(
 			503.0,
 			35.0,
 			image=self.logo_img
 		)
 
-    self.big_logo_img = PhotoImage(file=assets("image_match", "big_logo_img.png"))
+		self.big_logo_img = PhotoImage(file=assets("image_match", "big_logo_img.png"))
 
-    self.big_logo = self.canvas.create_image(
+		self.big_logo = self.canvas.create_image(
 			503.0,
 			356.0,
 			image=self.big_logo_img
 		)
 
-    self.wanted_face_img = PhotoImage(file="./database/wanted_list/" + wanted_image)
-    
-    self.wanted_face = self.canvas.create_image(
+		self.wanted_face_img = PhotoImage(file="./database/wanted_list/" + wanted_image)
+		
+		self.wanted_face = self.canvas.create_image(
 			230.0,
 			356.0,
 			image=self.wanted_face_img
 		)
-    
-    self.client_face_img = PhotoImage(file='./client_temporary_files/client.png')
 		
-    self.client_face = self.canvas.create_image(
-    	774.0,
-    	356.0,
-    	image=self.client_face_img
+		self.client_face_img = PhotoImage(file='./client_temporary_files/client.png')
+		
+		self.client_face = self.canvas.create_image(
+			774.0,
+			356.0,
+			image=self.client_face_img
 		)
-    
-  def show(self):
-    self.window.mainloop()
-  
-  def handle_close(self):
-    self.window.withdraw()
+		
+	def show(self):
+		self.window.mainloop()
+	
+	def handle_close(self):
+		self.window.withdraw()
 

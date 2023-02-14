@@ -19,7 +19,8 @@ class ClientVerification:
 		self.window.wm_title("Police Clearance Issuance System")
 		self.window.configure(bg = "#F5F5F5")
 		self.window.resizable(False, False)
-
+		self.window.iconbitmap("./assets/global/favicon.ico")
+		
 		self.canvas = Canvas(
 			self.window,
 			bg = "#F5F5F5",

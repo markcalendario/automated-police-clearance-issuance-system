@@ -14,6 +14,7 @@ class login_screen:
 		self.window.configure(bg = "#FFFFFF")
 		self.window.resizable(False, False)
 		self.window.wm_title("Police Clearance Issuance System")
+		self.window.iconbitmap("./assets/global/favicon.ico")
 
 		# Initialize Application Design and Layout
 
