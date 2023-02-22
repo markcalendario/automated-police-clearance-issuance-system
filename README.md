@@ -39,4 +39,12 @@ A final project for Modelling and Simulation
 For support, visit https://markcalendario10.web.app and https://github.com/markcalendario
 
 ## All Rights Reserved
-© [Mark Kenneth Calendario](https://github.com/markcalendario), Gwyneth Yim, Jeo Abarre, Czarina Khiara Borja, Jaycee Brigola, Sean Matthew Sinalubong, Jan Miles Cruz, Micole Vedasto
+© Copyright Holders
+- [Mark Kenneth Calendario](https://github.com/markcalendario), [Project Manager, System Developer] 
+- Gwyneth Yim [Technical Designer], 
+- Jeo Abarre [UI/UX Designer], 
+- Czarina Khiara Borja [Technical Writer], 
+- Jaycee Brigola [Technical Writer], 
+- Sean Matthew Sinalubong [System Analyst], 
+- Jan Miles Cruz [Business Analyst], 
+- Micole Vedasto [Technical Designer]
