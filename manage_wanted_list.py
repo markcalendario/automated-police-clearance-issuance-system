@@ -218,37 +218,48 @@ class ManageWantedList:
 		self.parent_frame.show()
 
 	def handle_import_wanted_image(self):
+		# If user clicked import wanted
+
+		# Open file dialog
 		selected_image_path = filedialog.askopenfile(
 			initialdir="./database/wanted_list", 
 			filetypes=[("Wanted file", "*.jpg;*.jpeg;*.png")])
 
+		# If no file selected, stop
 		if selected_image_path == None:
 			return
 		
 		selected_image_path = selected_image_path.name
 		
+		# If not exists
 		if not os.path.exists(selected_image_path):
 			showerror("Error", "Image file does not exists.")
 			return
 		
+		# Load the image to opencv
 		image = imread(selected_image_path)
+		# Get faces keypoints
 		faces = get_faces(image)
 		
+		# If no face detected
 		if not len(faces):
 			showerror("Error", "No face detected. Please make sure that it is a photo of a person.")
 			return
 		
+		# If frame does not have 1 face
 		if not has_one_face(faces):
 			showerror("Error", "The image contains number of faces less or more than 1.")
 			return
 
+		# Zoom to client face
 		resized, cropped_image = zoom_to_client_face(faces[0], image)
 		if not resized:
 			showerror("Error", "Can't process the image. Please make sure that the face is in the center.")
 			return
 		
+		# Display preview
+
 		imwrite(".temp_preview.png", cropped_image)
-	
 		self.wanted_image.configure(file=".temp_preview.png")
 		self.change_filename_preview(selected_image_path)
 		

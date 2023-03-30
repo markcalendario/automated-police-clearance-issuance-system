@@ -227,18 +227,22 @@ class ClientVerification:
 		messagebox.showinfo("Verification Guide", "Please start getting the face model of the client for verification.")
 
 	def is_face_wanted(self):
+		# Checks if the face detected from camera matched from the database
+
 		wanted_list_dir = './database/wanted_list'
 		wanted_list = os.listdir(wanted_list_dir)
-
+		# Load the client image
 		client_face = load_image_file('./client_temporary_files/client.png')
 		client_face_encoding = None
 
+		# Get the client's face encodings
 		try:
 			client_face_encoding = face_encodings(client_face)[0]
 		except IndexError:
 			messagebox.showerror("Verification Guide", "Face is unrecognizable. Try again.")
 
 		for wanted in wanted_list:
+			# Continue itteration if a file is not png
 			if not wanted.endswith(".png"):
 				continue
 
@@ -246,11 +250,13 @@ class ClientVerification:
 			result = []
 
 			try:
+				# Linearly compare list of wanted face encodings to the face of client
 				wanted_face_encoding = face_encodings(wanted_face)[0]
 				result = compare_faces([wanted_face_encoding], client_face_encoding, tolerance=0.45)
 			except:
 				print("Face not found in image [{}]".format(wanted))
 
+			# If client is wanted, return the wanted name
 			if any(result) and len(result) != 0:
 				return wanted
 
@@ -274,16 +280,20 @@ class ClientVerification:
 		self.result_btn.configure(image=image, command=command)
 
 	def handle_start_verification(self):
+		# Get client's face from the camera
 		is_face_captured = capture_client_face()
 		self.change_result_btn("WAITING")
 		
+		# If face is not detected
 		if not is_face_captured:
 			return messagebox.showwarning("Face Verification.", "Face verification is not successful. Try again to proceed.")
 		
 		messagebox.showinfo("Face Verification", "Client image has been successfully saved. Please wait for verification result.")
 
+		# Verify if the client's face matches from any of the wanted face from the database
 		wanted = self.is_face_wanted()
 
+		# If wanted, alert inspectors
 		if wanted:
 			return self.handle_wanted_match(wanted)
 		
@@ -293,6 +303,7 @@ class ClientVerification:
 		ClearanceForm(self, self.root).start()
 
 	def handle_wanted_match(self, wanted):
+		# Show image match
 		self.change_result_btn("FAILED", wanted)
 		image_match(self.window, wanted).show()
 

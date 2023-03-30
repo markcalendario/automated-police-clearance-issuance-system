@@ -366,6 +366,7 @@ class ClearanceForm:
 		self.parent_frame.show()
 
 	def validate_entries(self):
+		# Check if entries are valid
 		self.first_name = self.firstname_entry.get().strip()
 		self.last_name = self.lastname_entry.get().strip()
 		self.middle_name = self.middlename_entry.get().strip()
@@ -404,11 +405,13 @@ class ClearanceForm:
 		return True, "Valid"
 
 	def generate_clearance_number(self):
+		# Time based clearance number
 		now = datetime.now()
 		clearance_number = now.strftime('%m%d%Y_%H%M%S')
 		return f"CLRNC_{clearance_number}"
 
 	def save_clearance_record(self):
+		# Save a clearance data to the database
 		clearance_data_str = f"FIRSTNAME={self.first_name}\nMIDDLENAME={self.middle_name}\nLASTNAME={self.last_name}\nSUFFIX={self.suffix}\nADDRESS={self.address}\nBIRTHDATE={self.birthdate}\nBIRTHPLACE={self.birth_place}\nPURPOSE={self.purpose}\nREVOKED=0\n"
 
 		file = open(f"./database/clearance_list/{self.clearance_number}.txt", "w")
@@ -416,6 +419,7 @@ class ClearanceForm:
 		file.close()	
 
 	def generate_printable_clearance(self):
+		# Change html entries and make it printable
 		file = open("./clearance_template/clearance.html", "r")
 		content = file.read()
 		content = content.replace("%FULLNAME%", f"{self.first_name} {self.middle_name} {self.last_name} {self.suffix}")
@@ -432,6 +436,7 @@ class ClearanceForm:
 		file.close()
 
 	def generate_qr_code(self):
+		# Create QRcode where the clearance number as its data 
 		qr = qrcode.make(self.clearance_number)
 		qr.save("./client_temporary_files/qrcode.png")
 

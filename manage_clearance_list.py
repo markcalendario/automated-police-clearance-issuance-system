@@ -403,7 +403,7 @@ class ManageClearanceList:
 		self.canvas.itemconfigure(self.purpose, text=purpose)
 
 	def get_clearance_status(self):
-
+		# Clearance Status Enumeration
 		if not self.is_clearance_exists():
 			return ClearanceStatusEnum.INVALID.value
 
@@ -475,30 +475,42 @@ class ManageClearanceList:
 
 	def handle_scan_clearance_button_click(self):
 		self.reset_clearance_verification_state()
+
+		# Get a QR code data
 		clearance_number = start_qrcode_scan()
 
+		# If there's no returned data from QR Code
 		if not clearance_number:
 			showwarning("Warning", "Clearance scanning did not finish.")
 			return
 
+		# Verify clearance status
 		self.verify_clearance_status(clearance_number)
 
 	def handle_revoke_button_click(self):
+		# Revocation of clearance
+		# Revocation prompt
 		response = askyesno("Are you sure?", f"Do you really want to revoke {self.clearance_code}?")
-
+		
+		# If user cancelled
 		if not response:
 			return
 		
+		# Reset clearance
 		clearance = None
 		clearance_data = None
+
 		try:
+			# Test if file exists
 			clearance = open(f"./database/clearance_list/{self.clearance_code}.txt", "r")
 			clearance_data = clearance.read()
 			clearance.close()
 		except FileNotFoundError:
+			# If file not found
 			showerror("Error", f"Document {self.clearance_code} not found!")
 			return
 		
+		# Set value of "REVOKED" data to 1
 		clearance = open(f"./database/clearance_list/{self.clearance_code}.txt", "w")		
 		clearance_data = clearance_data.replace("REVOKED=0", "REVOKED=1")
 		clearance.write(clearance_data)
@@ -508,36 +520,46 @@ class ManageClearanceList:
 		self.reset_clearance_verification_state()
 
 	def handle_select_clearance_button_click(self):
+		# On user click select clearance button 
+
+		# Open a dialog
 		clearance_file_path = filedialog.askopenfile(
 			initialdir="./database/clearance_list", 
 			filetypes=[("Clearance file", "*.txt")])
 		
+		# If user cancelled selecting clearance file
 		if not clearance_file_path:
 			return 
 		
 		clearance_file_path = clearance_file_path.name
 		clearance_file_base_name = os.path.basename(clearance_file_path)
 
+		# If file is not a .txt file
 		if not clearance_file_base_name.endswith(".txt"):
 			showerror("File error", "File type is not acceptable.")
 			return
 		
+		# Detect if clearance is a legit clearance file
 		comes_from_database = "clearance_list" in clearance_file_path
 		has_two_underscore = clearance_file_base_name.count("_") == 2
 		has_clrnc_identifier = clearance_file_base_name.count("CLRNC_")
 
+		# If file does not comes from the database 
 		if not comes_from_database:
 			showerror("File error", "This file does not come from the clearance database.")
 			return
 
+		# If does not have "CLRNC" identifier
 		if not has_clrnc_identifier:
 			showerror("File error", "Invalid clearance file naming format. [CLRNC Error]")
 			return
 
+		# Has no two underscores
 		if not has_two_underscore:
 			showerror("File error", "Invalid clearance file naming format. [Separator Error]")
 			return
 		
+		# Does not have a valid file name
 		if not self.has_valid_file_name_date(clearance_file_base_name):
 			showerror("File error", "Invalid clearance file naming format. [Date Error]")
 			return
@@ -556,14 +578,16 @@ class ManageClearanceList:
 		self.clearance_code = clearance_number
 		self.clearance_status = self.get_clearance_status()
 
+		# If invalid, show result and stop
 		if self.clearance_status == ClearanceStatusEnum.INVALID.value:
 			self.show_clearance_verification_result()
 			return
 
+		# If valid, pack the revoke button
 		if self.clearance_status == ClearanceStatusEnum.VALID.value:
 			self.place_revoke_button()
 		
-
+		# If valid, expired, and/or revoked show result
 		self.canvas.itemconfigure(self.title, text=f"Result for {self.clearance_code}") 
 		self.clearance_expiry = datetime.strftime(self.get_expiration_date(), "%b. %d, %Y")
 		self.display_clearance_data()
